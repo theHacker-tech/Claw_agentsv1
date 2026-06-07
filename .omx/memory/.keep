@@ -1,1 +1,1 @@
-.keep
+This file ensures Git tracks the memory directory for persistent agent state.
