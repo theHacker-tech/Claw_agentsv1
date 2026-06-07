@@ -48,12 +48,12 @@ def generate_and_build_codebase(prd_text):
     [END_FILE]
     
     Ensure you generate:
-    1. The Supabase Database Schema and RLS Policies (e.g., schema.sql)
+    1. The Supabase Database Schema and RLS Policies (e.g., supabase/schema.sql)
     2. The Telegram Bot service logic using the safe lexicon terms.
     3. The Vercel serverless functions/endpoints handling token generation and async payment states.
     4. A concise README.md for the generated project.
     
-    All paths must be relative to the project root. Do not include introductory text or conversational filler; output only the file blocks."""
+    All paths must be relative to the project root. DO NOT start file paths with a slash (/). Do not include introductory text or conversational filler; output only the file blocks."""
 
     payload = {
         "model": MODEL,
@@ -95,7 +95,8 @@ def generate_and_build_codebase(prd_text):
 
     print(f"\nParsing response and writing files to target workspace: '{OUTPUT_ROOT}/'...")
     for relative_path, file_content in file_blocks:
-        relative_path = relative_path.strip()
+        # STRIP LEADING SLASHES to prevent writing to absolute root directories
+        relative_path = relative_path.strip().lstrip("/\\")
         file_content = file_content.strip()
         
         # Build the full absolute path inside our dedicated project folder
