@@ -1,1 +1,2 @@
-
+Path: .github/workflows/prd-to-code.yml
+Action: Replace empty file with proper GitHub Actions workflow content
