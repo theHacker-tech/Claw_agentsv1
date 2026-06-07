@@ -1,2 +1,42 @@
-Path: .github/workflows/prd-to-code.yml
-Action: Replace empty file with proper GitHub Actions workflow content
+name: Autonomous PRD-to-Code Pipeline
+
+on:
+  push:
+    paths:
+      - 'PRD.md'
+  workflow_dispatch: # Allows manual triggering
+
+permissions:
+  contents: write
+
+jobs:
+  run-ai-agent:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 
+          
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+          
+      - name: Execute Agent Harness
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          echo "Starting PRD analysis..."
+          python src/microcodegen.py
+          
+      - name: Commit and Push Generated Files
+        run: |
+          git config --global user.name 'UltraWorker Agent'
+          git config --global user.email 'actions@github.com'
+          git add .
+          git diff --quiet && git diff --staged --quiet || (git commit -m "[Auto-Commit] Agent generated code and architecture" && git push)
