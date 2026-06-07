@@ -6,8 +6,8 @@ import time
 
 # Configuration
 API_KEY = os.environ.get("OPENROUTER_API_KEY")
-# Using a highly capable free model for coding and reasoning
-MODEL = "meta-llama/llama-3.3-70b-instruct:free" 
+# Using the OpenRouter auto-router to dynamically pick available free models
+MODEL = "openrouter/free"
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
 
 def read_prd():
@@ -50,21 +50,23 @@ def generate_code(prd_text):
         ]
     }
 
-    # Handle rate limits with 3 retry attempts
-    for attempt in range(3):
-        print(f"Contacting OpenRouter API (Attempt {attempt + 1}/3)...")
+    # Increased to 5 attempts to survive heavy traffic spikes
+    MAX_ATTEMPTS = 5
+    for attempt in range(MAX_ATTEMPTS):
+        print(f"Contacting OpenRouter API (Attempt {attempt + 1}/{MAX_ATTEMPTS})...")
         response = requests.post(API_URL, headers=headers, data=json.dumps(payload))
         
         if response.status_code == 200:
             return response.json()['choices'][0]['message']['content']
         elif response.status_code == 429:
-            print("Rate limit hit. Pausing for 10 seconds before retry...")
-            time.sleep(10)
+            # Increased wait time to 30 seconds to let the queue clear
+            print("Rate limit hit. Pausing for 30 seconds before retry...")
+            time.sleep(30)
         else:
             print(f"API Error: {response.status_code} - {response.text}")
             sys.exit(1)
             
-    print("Failed to get response from OpenRouter after 3 attempts.")
+    print(f"Failed to get response from OpenRouter after {MAX_ATTEMPTS} attempts.")
     sys.exit(1)
 
 if __name__ == "__main__":
@@ -75,5 +77,5 @@ if __name__ == "__main__":
     output_filename = "GENERATED_ARCHITECTURE.md"
     with open(output_filename, "w", encoding="utf-8") as f:
         f.write(result)
-        
+    
     print(f"Success: Generated architecture saved to {output_filename}")
