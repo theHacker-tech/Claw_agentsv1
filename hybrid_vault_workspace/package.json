@@ -1,0 +1,21 @@
+{
+  "name": "hybrid-vault-backend",
+  "version": "1.0.0",
+  "description": "Vercel serverless backend for Hybrid Vault escrow platform",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "pg": "^8.11.0",
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "vercel": "^34.0.0"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}
