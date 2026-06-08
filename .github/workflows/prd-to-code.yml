@@ -1,21 +1,61 @@
-    name: Commit and Push Code
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        git config --global user.name 'UltraWorker Agent'
-        git config --global user.email 'actions@github.com'
-        git add .
-        
-        # Check if there are actual changes to commit
-        if ! git diff --quiet && git diff --staged --quiet; then
-          git commit -m "[Auto-Commit] Agent generated code and architecture"
+name: Autonomous PRD to Code Pipeline
+
+on:
+  push:
+    paths:
+      - 'PRD.md'
+      - 'src/microcodegen.py'
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  run-ai-agent:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
           
-          # Pull latest remote updates via rebase to avoid non-fast-forward rejections
-          git pull --rebase origin main
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
           
-          # Push the combined history back to your repository
-          git push origin main
-        else
-          echo "No changes detected. Skipping deployment."
-        fi
-        
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Execute Agent Harness
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          echo "Starting PRD analysis..."
+          python src/microcodegen.py
+          
+      - name: Commit and Push Code
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name 'UltraWorker Agent'
+          git config --global user.email 'actions@github.com'
+          git add .
+          
+          # Check if there are actual changes to commit
+          if ! git diff --quiet && git diff --staged --quiet; then
+            git commit -m "[Auto-Commit] Agent generated codebase"
+            
+            # Pull latest remote updates via rebase to avoid conflicts
+            git pull --rebase origin main
+            
+            # Push the combined history back to your repository
+            git push origin main
+          else
+            echo "No changes detected. Skipping deployment."
+          fi
+          
