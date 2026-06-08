@@ -1,5 +1,14 @@
 # Product Requirements Document: Hybrid Vault (V1)  
 
+### CRITICAL GENERATION INSTRUCTIONS: NO STUBS
+You are currently failing to write the database code. You MUST write the complete, raw PostgreSQL code for the Supabase schema. DO NOT use single-line stubs or comments like "// supabase schema defining Row-Level Security policies". 
+
+I require the exact, fully written `CREATE TABLE` and `CREATE POLICY` statements for:
+1. The **Users** table (handling Telegram ID mappings).
+2. The **Briefcases** table (handling the 6-digit token, asset descriptions, fee calculations, and escrow states).
+Output the full SQL file.
+
+
 ## 1. Objective & System Overview 
 
 A decoupled, hybrid escrow platform utilizing a Telegram bot as a frontend dashboard/pager and an independent web engine for financial processing and asset storage. It provides a trustless, automated-release escrow environment for high-trust digital asset traders exchanging custodial (files, software) and non-custodial (game accounts) assets.
