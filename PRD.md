@@ -1,4 +1,4 @@
-# Product Requirements Document: Hybrid Vault (V1)  
+# Product Requirements Document: Hybrid Vault (V1)
 
 ### CRITICAL GENERATION INSTRUCTIONS: NO STUBS
 You are currently failing to write the database code. You MUST write the complete, raw PostgreSQL code for the Supabase schema. DO NOT use single-line stubs or comments like "// supabase schema defining Row-Level Security policies". 
