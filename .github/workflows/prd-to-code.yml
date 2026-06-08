@@ -50,8 +50,8 @@ jobs:
           if ! git diff --staged --quiet; then
             git commit -m "[Auto-Commit] Agent generated codebase"
             
-            # Pull latest remote updates via rebase to avoid conflicts
-            git pull --rebase origin main
+            # Pull latest remote updates, automatically favoring the agent's new files if there's a conflict
+            git pull --rebase -X theirs origin main
             
             # Push the combined history back to your repository
             git push origin main
