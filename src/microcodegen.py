@@ -14,7 +14,7 @@ OUTPUT_ROOT = "hybrid_vault_workspace"
 # The "Waterfall" - A prioritized list of high-tier free coding models
 MODELS = [
     "meta-llama/llama-3.3-70b-instruct:free",
-    "google/gemini-2.0-pro-exp-02-05:free",
+    "google/gemini-pro:free",
     "openrouter/free"
 ]
 
