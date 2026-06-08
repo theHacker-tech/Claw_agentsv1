@@ -2,7 +2,7 @@
 
 ## 1. Objective & System Overview
 
-A decoupled,  hybrid escrow platform utilizing a Telegram bot as a frontend dashboard/pager and an independent web engine for financial processing and asset storage. It provides a trustless, automated-release escrow environment for high-trust digital asset traders exchanging custodial (files, software) and non-custodial (game accounts) assets.
+A decoupled, hybrid escrow platform utilizing a Telegram bot as a frontend dashboard/pager and an independent web engine for financial processing and asset storage. It provides a trustless, automated-release escrow environment for high-trust digital asset traders exchanging custodial (files, software) and non-custodial (game accounts) assets.
 
 **Core Value Proposition:** Provides out-of-band financial escrow to prevent scamming without paying prohibitive platform taxes (e.g., Telegram's 35% Stars tax), while utilizing architectural masking to evade automated NLP platform bans.
 
